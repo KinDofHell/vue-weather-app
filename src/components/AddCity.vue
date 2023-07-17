@@ -8,10 +8,17 @@
       <button class="delete-button" @click="confirmDeleteCity(index)">
         &#10006;
       </button>
-      <weather-card :city="city"></weather-card>
-      <temperature-chart :city="city"></temperature-chart>
+      <weather-card
+        :city="city.name"
+        @toggle-favorite="toggleFavorite"
+      ></weather-card>
+      <temperature-chart :city="city.name"></temperature-chart>
     </div>
-    <button v-if="favoriteCities.length < 5" @click="showAddCityModal">
+    <button
+      class="add-button"
+      v-if="favoriteCities.length < 5"
+      @click="showAddCityModal"
+    >
       Add City
     </button>
     <add-city-modal
@@ -57,11 +64,24 @@ export default {
       this.showModal = true;
     },
     addCity(city) {
-      this.favoriteCities.push(city);
-      localStorage.setItem(
-        "favoriteCities",
-        JSON.stringify(this.favoriteCities)
-      );
+      if (this.favoriteCities.length >= 5) {
+        // Показати модальне вікно, якщо досягнуто максимальну кількість обраних міст
+        alert(
+          "You have reached the maximum limit of favorite cities. Please remove a city to add a new one."
+        );
+        return;
+      }
+
+      // Перевірка, чи місто вже є в списку обраних
+      if (
+        !this.favoriteCities.some((favoriteCity) => favoriteCity.name === city)
+      ) {
+        this.favoriteCities.push({ name: city, isFavorite: true });
+        localStorage.setItem(
+          "favoriteCities",
+          JSON.stringify(this.favoriteCities)
+        );
+      }
       this.showModal = false;
     },
     closeModal() {
@@ -82,6 +102,18 @@ export default {
     cancelDelete() {
       this.showConfirmationModal = false;
     },
+    toggleFavorite(city, isFavorite) {
+      const index = this.favoriteCities.findIndex(
+        (favoriteCity) => favoriteCity.name === city
+      );
+      if (index !== -1) {
+        this.favoriteCities[index].isFavorite = isFavorite;
+        localStorage.setItem(
+          "favoriteCities",
+          JSON.stringify(this.favoriteCities)
+        );
+      }
+    },
   },
 };
 </script>
@@ -91,10 +123,21 @@ export default {
   margin-bottom: 20px;
 }
 
-.delete-button {
+.add-button {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 140px;
+  right: 320px;
+
+  border: none;
+  border-radius: 10px;
+
+  background-color: #1a67d9;
+  color: white;
+
+  padding: 10px;
+}
+
+.delete-button {
   border: none;
   background: none;
   font-size: 14px;

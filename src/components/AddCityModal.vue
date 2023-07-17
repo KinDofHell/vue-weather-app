@@ -1,6 +1,6 @@
 <template>
   <div class="modal-overlay">
-    <div class="modal">
+    <article class="modal">
       <h2>Add City</h2>
       <input
         type="text"
@@ -19,7 +19,7 @@
       </ul>
       <p v-else>No results found.</p>
       <button @click="closeModal">Close</button>
-    </div>
+    </article>
   </div>
 </template>
 
@@ -27,6 +27,7 @@
 import axios from "axios";
 
 export default {
+  name: "CityModal",
   data() {
     return {
       searchText: "",

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <section class="input-search">
     <input
       type="text"
       v-model="searchText"
@@ -15,7 +15,7 @@
         {{ city.name }}
       </li>
     </ul>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -58,13 +58,44 @@ export default {
 </script>
 
 <style scoped>
-ul {
+.input-search {
+  position: absolute;
+  right: 50px;
+}
+input {
+  border: none;
+  border-radius: 10px;
+
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+
+  background-color: lightgray;
+
+  padding: 10px 5px;
+}
+.input-search > ul {
   list-style-type: none;
-  padding: 0;
-  margin: 0;
+
+  background-color: darkgray;
+
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 li {
   cursor: pointer;
+
+  text-align: center;
+  padding: 10px 0;
+
+  font-size: 18px;
+
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid black;
+  }
 }
 </style>

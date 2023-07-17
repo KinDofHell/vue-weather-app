@@ -6,7 +6,22 @@
 
 <script>
 import { Chart } from "chart.js";
+import {
+  CategoryScale,
+  LinearScale,
+  LineController,
+  PointElement,
+  LineElement,
+} from "chart.js";
 import axios from "axios";
+
+Chart.register(
+  CategoryScale,
+  LinearScale,
+  LineController,
+  PointElement,
+  LineElement
+);
 
 export default {
   props: ["city"],
@@ -33,18 +48,14 @@ export default {
             ],
           },
           options: {
-            responsive: true,
-            maintainAspectRatio: false,
             scales: {
               x: {
-                ticks: {
-                  display: false,
-                },
+                type: "category",
+                labels: labels,
               },
               y: {
-                ticks: {
-                  beginAtZero: true,
-                },
+                type: "linear",
+                beginAtZero: true,
               },
             },
           },
@@ -59,6 +70,6 @@ export default {
 
 <style scoped>
 .temperature-chart {
-  max-width: 100%;
+  max-width: 50%;
 }
 </style>

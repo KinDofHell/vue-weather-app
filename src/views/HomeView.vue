@@ -1,12 +1,14 @@
 <template>
   <main class="home">
-    <autocomplete-input @city-selected="addCity"></autocomplete-input>
-    <div v-for="(city, index) in cities" :key="index">
+    <section class="instruments">
+      <autocomplete-input @city-selected="addCity"></autocomplete-input>
+    </section>
+    <section class="flex-items" v-for="(city, index) in cities" :key="index">
       <button @click="deleteCity(index)">Delete</button>
       <weather-card :city="city"></weather-card>
       <temperature-chart :city="city"></temperature-chart>
-    </div>
-    <favorite-cities></favorite-cities>
+    </section>
+    <add-city></add-city>
   </main>
 </template>
 
@@ -14,12 +16,12 @@
 import AutocompleteInput from "@/components/AutocompleteInput.vue";
 import TemperatureChart from "@/components/TemperatureChart.vue";
 import WeatherCard from "@/components/WeatherCard.vue";
-import FavoriteCities from "@/components/FavoriteCities.vue";
+import AddCity from "@/components/AddCity.vue";
 
 export default {
   name: "HomeView",
   components: {
-    FavoriteCities,
+    AddCity,
     WeatherCard,
     TemperatureChart,
     AutocompleteInput,
@@ -39,3 +41,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.home {
+  padding: 20px;
+}
+</style>

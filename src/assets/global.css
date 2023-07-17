@@ -9,3 +9,10 @@
     justify-content: space-around;
     align-items: center;
 }
+
+.flex-items-column{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
