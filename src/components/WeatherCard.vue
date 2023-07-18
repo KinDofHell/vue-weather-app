@@ -5,6 +5,7 @@
   >
     <h2>{{ city }}</h2>
     <p>{{ weatherDescription }}</p>
+    <img :src="weatherIconUrl" alt="Weather Icon" v-if="weatherIconUrl" />
     <p>{{ temperature }}°C</p>
     <button @click="toggleFavorite" v-if="!isFavorite">Add to Favorites</button>
     <button @click="toggleFavorite" v-else>Remove from Favorites</button>
@@ -21,7 +22,16 @@ export default {
       weatherDescription: "",
       temperature: null,
       isFavorite: false,
+      weatherIcon: null,
     };
+  },
+  computed: {
+    weatherIconUrl() {
+      if (this.weatherIcon) {
+        return `https://openweathermap.org/img/wn/${this.weatherIcon}.png`;
+      }
+      return null;
+    },
   },
   mounted() {
     this.getWeatherData();
@@ -36,12 +46,18 @@ export default {
         .then((response) => {
           this.weatherDescription = response.data.weather[0].description;
           this.temperature = response.data.main.temp;
+          this.weatherIcon = response.data.weather[0].icon;
         })
         .catch((error) => {
           console.log(error);
         });
     },
     toggleFavorite() {
+      if (!this.isFavorite)
+        if (JSON.parse(localStorage.getItem("favorites")).length >= 5) {
+          alert("You have reached the maximum limit of favorite cities!");
+          return;
+        }
       this.isFavorite = !this.isFavorite;
       this.saveFavoritesToLocalStorage();
       this.$emit("toggle-favorite", this.city, this.isFavorite);
@@ -78,7 +94,7 @@ export default {
   background-color: #f2f2f2;
   padding: 20px;
   border-radius: 10px;
-  width: fit-content;
+  min-width: 150px;
 }
 
 .favorite {
@@ -87,5 +103,7 @@ export default {
 
 button {
   margin-top: 10px;
+  padding: 5px;
+  border-radius: 5px;
 }
 </style>

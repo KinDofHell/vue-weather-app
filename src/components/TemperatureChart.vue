@@ -70,6 +70,6 @@ export default {
 
 <style scoped>
 .temperature-chart {
-  max-width: 50%;
+  width: 100%;
 }
 </style>

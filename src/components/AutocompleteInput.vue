@@ -61,6 +61,7 @@ export default {
 .input-search {
   position: absolute;
   right: 50px;
+  top: 135px;
 }
 input {
   border: none;

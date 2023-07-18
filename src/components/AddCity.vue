@@ -3,7 +3,7 @@
     <div
       v-for="(city, index) in favoriteCities"
       :key="index"
-      class="weather-block"
+      class="weather-block flex-items"
     >
       <button class="delete-button" @click="confirmDeleteCity(index)">
         &#10006;
@@ -120,7 +120,13 @@ export default {
 
 <style scoped>
 .weather-block {
-  margin-bottom: 20px;
+  margin-top: 50px;
+  padding: 10px;
+  height: auto;
+
+  background-color: lightblue;
+
+  border-radius: 10px;
 }
 
 .add-button {
@@ -140,8 +146,10 @@ export default {
 .delete-button {
   border: none;
   background: none;
-  font-size: 14px;
+  font-size: 20px;
   color: red;
   cursor: pointer;
+
+  margin-right: 20px;
 }
 </style>
