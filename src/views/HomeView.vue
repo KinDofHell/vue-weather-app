@@ -1,33 +1,32 @@
 <template>
-  <main class="home">
+  <main class="home flex-items">
     <section class="instruments">
-      <section class="fav flex-items">
-        <h2 class="fav-title">Favorite:</h2>
-        <h3 v-for="(city, index) in favoriteCities" :key="index">
-          {{ city }}
-        </h3>
-      </section>
       <autocomplete-input @city-selected="addCity"></autocomplete-input>
     </section>
-    <section
-      class="flex-items weather-block"
-      v-for="(city, index) in cities"
-      :key="index"
-    >
-      <button class="delete-button" @click="deleteCity(index)">&#10006;</button>
-      <weather-card
-        :city="city.name"
-        @toggle-favorite="updateFavoriteCities"
-      ></weather-card>
-      <temperature-chart :city="city.name"></temperature-chart>
+    <section class="cards flex-items-column">
+      <section class="flex-items-column weather-block" v-if="this.city">
+        <button class="delete-button" @click="deleteCity()">Delete</button>
+        <weather-card
+          :city="this.city.name"
+          @toggle-favorite="updateFavoriteCities"
+        ></weather-card>
+      </section>
+      <add-city></add-city>
     </section>
-    <add-city></add-city>
+    <article class="fav flex-items-column">
+      <h2>Favorites</h2>
+      <ul>
+        <li>sgdfg</li>
+        <li>sdfgsdfg</li>
+        <li>dsfgsdfg</li>
+        <li>sdfgsdfg</li>
+      </ul>
+    </article>
   </main>
 </template>
 
 <script>
 import AutocompleteInput from "@/components/AutocompleteInput.vue";
-import TemperatureChart from "@/components/TemperatureChart.vue";
 import WeatherCard from "@/components/WeatherCard.vue";
 import AddCity from "@/components/AddCity.vue";
 
@@ -36,21 +35,22 @@ export default {
   components: {
     AddCity,
     WeatherCard,
-    TemperatureChart,
     AutocompleteInput,
   },
   data() {
     return {
-      cities: [],
+      city: JSON.parse(localStorage.getItem("searchedCity")) || null,
       favoriteCities: JSON.parse(localStorage.getItem("favorites")),
     };
   },
   methods: {
     addCity(city) {
-      this.cities.push(city);
+      this.city = city;
+      localStorage.setItem("searchedCity", JSON.stringify(this.city));
     },
-    deleteCity(index) {
-      this.cities.splice(index, 1);
+    deleteCity() {
+      this.city = null;
+      localStorage.removeItem("searchedCity");
     },
     updateFavoriteCities(city, isFavorite) {
       if (isFavorite) {
@@ -75,40 +75,38 @@ export default {
 <style>
 .home {
   padding: 20px;
+
+  margin-top: 100px;
 }
 .weather-block {
-  margin-top: 50px;
-  margin-bottom: 20px;
-  padding: 10px;
-  height: auto;
+  border: 1px solid black;
+  border-radius: 10px;
 
   background-color: lightblue;
-
-  border-radius: 10px;
 }
 .delete-button {
   border: none;
-  background: none;
-  font-size: 20px;
-  color: red;
+  border-radius: 10px;
+
+  background-color: red;
+  color: white;
+
+  width: 100%;
+
+  font-size: 30px;
+
   cursor: pointer;
 
-  margin-right: 20px;
+  padding: 0 10px;
+
+  transition: all 0.3s;
+
+  &:hover {
+    background-color: darkred;
+    scale: 0.8;
+  }
 }
 .fav {
-  min-width: 30%;
-
-  max-width: 60%;
-}
-.fav > h3 {
-  background-color: green;
-  color: white;
-  padding: 2px;
-  border-radius: 5px;
-}
-.fav-title {
-  background-color: gray;
-  padding: 2px;
-  border-radius: 5px;
+  width: 300px;
 }
 </style>

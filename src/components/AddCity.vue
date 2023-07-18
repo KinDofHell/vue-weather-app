@@ -12,7 +12,6 @@
         :city="city.name"
         @toggle-favorite="toggleFavorite"
       ></weather-card>
-      <temperature-chart :city="city.name"></temperature-chart>
     </div>
     <button
       class="add-button"
@@ -36,14 +35,12 @@
 
 <script>
 import WeatherCard from "./WeatherCard.vue";
-import TemperatureChart from "./TemperatureChart.vue";
 import AddCityModal from "./AddCityModal.vue";
 import ConfirmationModal from "./ConfirmationModal.vue";
 
 export default {
   components: {
     WeatherCard,
-    TemperatureChart,
     AddCityModal,
     ConfirmationModal,
   },

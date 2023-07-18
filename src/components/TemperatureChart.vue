@@ -25,51 +25,79 @@ Chart.register(
 
 export default {
   props: ["city"],
+  data() {
+    return {
+      chartInstance: null,
+    };
+  },
+  watch: {
+    city(newCity) {
+      if (this.chartInstance) {
+        this.chartInstance.destroy();
+      }
+      this.getWeatherData(newCity);
+    },
+  },
   mounted() {
-    axios
-      .get(
-        `https://api.openweathermap.org/data/2.5/forecast?q=${this.city}&appid=928403f3d69e0d00da8ce295529e45fb&units=metric`
-      )
-      .then((response) => {
-        const labels = response.data.list.map((data) => data.dt_txt);
-        const temperatures = response.data.list.map((data) => data.main.temp);
+    this.getWeatherData(this.city);
+  },
+  methods: {
+    getWeatherData(city) {
+      axios
+        .get(
+          `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=928403f3d69e0d00da8ce295529e45fb&units=metric`
+        )
+        .then((response) => {
+          const labels = response.data.list.map((data) => data.dt_txt);
+          const temperatures = response.data.list.map((data) => data.main.temp);
 
-        new Chart(this.$refs.chartCanvas.getContext("2d"), {
-          type: "line",
-          data: {
-            labels: labels,
-            datasets: [
-              {
-                label: "Temperature (°C)",
-                data: temperatures,
-                borderColor: "blue",
-                fill: false,
-              },
-            ],
-          },
-          options: {
-            scales: {
-              x: {
-                type: "category",
+          this.chartInstance = new Chart(
+            this.$refs.chartCanvas.getContext("2d"),
+            {
+              type: "line",
+              data: {
                 labels: labels,
+                datasets: [
+                  {
+                    label: "Temperature (°C)",
+                    data: temperatures,
+                    borderColor: "blue",
+                    fill: false,
+                  },
+                ],
               },
-              y: {
-                type: "linear",
-                beginAtZero: true,
+              options: {
+                scales: {
+                  x: {
+                    type: "category",
+                    labels: labels,
+                  },
+                  y: {
+                    type: "linear",
+                    beginAtZero: true,
+                  },
+                },
               },
-            },
-          },
+            }
+          );
+        })
+        .catch((error) => {
+          console.log(error);
         });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    },
   },
 };
 </script>
 
 <style scoped>
 .temperature-chart {
-  width: 100%;
+  border: 1px solid black;
+  border-radius: 10px;
+
+  padding: 10px;
+
+  width: 500px;
+
+  background-color: mintcream;
 }
 </style>

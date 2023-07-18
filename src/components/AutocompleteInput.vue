@@ -49,7 +49,7 @@ export default {
       }
     },
     selectCity(city) {
-      this.searchText = city.name;
+      this.searchText = "";
       this.showAutocomplete = false;
       this.$emit("city-selected", city);
     },
